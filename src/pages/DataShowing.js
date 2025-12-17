@@ -35,7 +35,7 @@ export function DataShowing() {
   //WE CAN USE BUTTON ARE ELSE CARD TO NAVIGATE DIRECTLY
   //In my code both for card and button we can use navigate to go back
 
-  {
+  //{
     /* <Grid size xs={12}>
 
       <Button variant="contained" onClick={()=>navigate(-1)}>
@@ -43,10 +43,10 @@ export function DataShowing() {
         </Button>
 
       </Grid> */
-  }
+  //}
 
   return (
-    <Grid container spacing={2} sx={{ backgroundColor: "ButtonFace", p: 10 }}>
+    <Grid container>
       <Grid size xs={12}>
         {loading && <Typography>Loading movie details...</Typography>}
       </Grid>
