@@ -7,10 +7,13 @@ import { API_URL } from "./baseurl";
 
 // export const movieSearch = async (searchTerm, type = "") => {
 
-export const movieSearch = async (searchTerm, page = 1) => {
+export const movieSearch = async (searchTerm, page = 1, type) => {
+
+  
+  const typeParam = type !== "all" ? `&type=${type}` : "";
   try {
     const response = await axios.get(
-      `${API_URL}?s=${searchTerm}&apikey=${API_KEY}&page=${page}`
+      `${API_URL}?s=${searchTerm}&apikey=${API_KEY}&page=${page}${typeParam}`
     );
 
     return response.data;

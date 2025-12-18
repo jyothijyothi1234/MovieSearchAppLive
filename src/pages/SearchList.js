@@ -15,7 +15,9 @@ export function SearchList() {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
+  const [type, setType] = useState("all");
 
+  
   const handlerPage1 = () => {
     setPage(1);
   };
@@ -49,11 +51,19 @@ export function SearchList() {
   };
   const searchHandler = (e) => {
     setSearch(e.target.value);
+    setPage(1);
+  };
+
+
+  const handleTypeChange = (e) => {
+    setType(e.target.value);
+    setPage(1);
   };
 
   const clearData = () => {
     setSearch("");
     setSearchShow([]);
+    setPage(1);
   };
 
   // If we are using form then this method is correct for that with out use effect
@@ -71,7 +81,7 @@ export function SearchList() {
         //HERE IN THIS CODE I HAVE MENTION BELOW "movie" BECAUSE IN API U HAVE PASSED THE TYPE THERE BASED ON THAT IT WILL FETCH DATA
         // const dataSearch = await movieSearch(search, "movie", 1);
 
-        const dataSearch = await movieSearch(search, page);
+        const dataSearch = await movieSearch(search,page,type);
 
         const searchData = dataSearch?.Search || [];
 
@@ -88,7 +98,7 @@ export function SearchList() {
     }, 500);
 
     return () => clearTimeout(clear);
-  }, [search, page]);
+  }, [search, page,type]);
 
   //Here in this code i have used the container because that cards are coming linely if we use that container know those are coming in side by side    etc:1)Page layout → Grid container
 
@@ -141,6 +151,8 @@ export function SearchList() {
             handlerPage4={handlerPage4}
             handlerPage5={handlerPage5}
             handlerPage6={handlerPage6}
+            handleTypeChange={handleTypeChange}
+            type={type}
             // here this we need to use if we are using form method means
             // handlerSearch={handlerSearch}
           />

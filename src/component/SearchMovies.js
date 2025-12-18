@@ -2,6 +2,8 @@ import React from "react";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
 
 function SearchMovies({
   searchHandler,
@@ -10,6 +12,8 @@ function SearchMovies({
   search,
   handlePrevious,
   handleNext,
+  type,
+  handleTypeChange
 }) {
   //here we can use form & button  are else without form we can use useEffect in apis both methods we can use
   //   <Button variant="contained" type="submit">
@@ -50,10 +54,26 @@ function SearchMovies({
             onChange={searchHandler}
             value={search}
           />
-          <Button variant="contained" onClick={clearData} sx={{ mt: 1, ml: 2 }}>
+          <Button variant="contained" onClick={clearData} sx={{  ml: 2,mr:5 }}>
             Clear
           </Button>
+
+
+          <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={type}
+          onChange={handleTypeChange}
+        >
+         <MenuItem value="all">All</MenuItem>
+          <MenuItem value="movie">Movie</MenuItem>
+          <MenuItem value="series">Web Series</MenuItem>
+          <MenuItem value="episode">Episode</MenuItem>
+
+        </Select>
         </Grid>
+
+
       </Grid>
     </Grid>
 
