@@ -6,6 +6,7 @@ import "./App.css";
 import { SearchList } from "./pages/SearchList";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { DataShowing } from "./pages/DataShowing";
+import SearchMovies from "./component/SearchMovies";
 function App() {
   return (
     <div className="App">
@@ -15,6 +16,7 @@ function App() {
           <Route path="/movie/:id" element={<DataShowing />} />
         </Routes>
       </BrowserRouter>
+
     </div>
   );
 }

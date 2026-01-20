@@ -7,6 +7,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
 
 export function DataShowing() {
   const { id } = useParams();
@@ -16,6 +17,9 @@ export function DataShowing() {
   const [movie, setMovie] = useState(null);
 
   useEffect(() => {
+    // Scroll to top when component mounts
+    window.scrollTo(0, 0);
+
     setLoading(true);
 
     const fetchMovieById = async () => {
@@ -32,39 +36,46 @@ export function DataShowing() {
     fetchMovieById();
   }, [id]);
 
-  //WE CAN USE BUTTON ARE ELSE CARD TO NAVIGATE DIRECTLY
-  //In my code both for card and button we can use navigate to go back
-
-  //{
-    /* <Grid size xs={12}>
-
-      <Button variant="contained" onClick={()=>navigate(-1)}>
-         Goback
-        </Button>
-
-      </Grid> */
-  //}
-
   return (
-    <Grid container>
-      <Grid size xs={12}>
-        {loading && <Typography>Loading movie details...</Typography>}
-      </Grid>
-
-      <Grid size xs={12}>
-        {!loading && !movie && <Typography>Movie not found</Typography>}
-      </Grid>
-
-      <Grid size xs={12}>
-        <Grid size xs={12} sx={{ margin: "7px 20px" }}>
-          <Button variant="contained" onClick={() => navigate(-1)}>
-            Goback
+    <Box
+      sx={{
+        minHeight: "100vh",
+        padding: { xs: 2, md: 4 },
+        backgroundColor: "#f5f5f5",
+      }}
+    >
+      <Grid container spacing={2} justifyContent="center">
+        <Grid item xs={12}>
+          <Button
+            variant="contained"
+            onClick={() => navigate(-1)}
+            sx={{ mb: 2 }}
+          >
+            Go Back
           </Button>
         </Grid>
 
-        <Grid size xs={12}>
-          {movie && (
-            <Card sx={{ maxWidth: 400 }} onClick={() => navigate("/")}>
+        {loading && (
+          <Grid item xs={12}>
+            <Typography sx={{ textAlign: "center", fontSize: "20px" }}>
+              Loading movie details...
+            </Typography>
+          </Grid>
+        )}
+
+        {!loading && !movie && (
+          <Grid item xs={12}>
+            <Typography
+              sx={{ textAlign: "center", fontSize: "20px", color: "red" }}
+            >
+              Movie not found
+            </Typography>
+          </Grid>
+        )}
+
+        {movie && (
+          <Grid item xs={12} sm={10} md={6}>
+            <Card>
               <CardMedia
                 component="img"
                 image={
@@ -73,17 +84,33 @@ export function DataShowing() {
                     : "https://via.placeholder.com/300x400?text=No+Image"
                 }
                 alt={movie.Title}
+                sx={{ maxHeight: 600, objectFit: "contain" }}
               />
               <CardContent>
-                <Typography sx={{ fontSize: "20px" }}>{movie.Title}</Typography>
-                <Typography>Year: {movie.Year}</Typography>
-                <Typography>Genre: {movie.Genre}</Typography>
-                <Typography>IMDB Rating: {movie.imdbRating}</Typography>
+                <Typography
+                  sx={{ fontSize: "24px", fontWeight: "bold", mb: 2 }}
+                >
+                  {movie.Title}
+                </Typography>
+                <Typography sx={{ mb: 1 }}>
+                  <strong>Year:</strong> {movie.Year}
+                </Typography>
+                <Typography sx={{ mb: 1 }}>
+                  <strong>Genre:</strong> {movie.Genre}
+                </Typography>
+                <Typography sx={{ mb: 1 }}>
+                  <strong>IMDB Rating:</strong> {movie.imdbRating}
+                </Typography>
+                {movie.Plot && (
+                  <Typography sx={{ mt: 2 }}>
+                    <strong>Plot:</strong> {movie.Plot}
+                  </Typography>
+                )}
               </CardContent>
             </Card>
-          )}
-        </Grid>
+          </Grid>
+        )}
       </Grid>
-    </Grid>
+    </Box>
   );
 }

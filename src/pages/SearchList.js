@@ -9,13 +9,19 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import { NavLink } from "react-router-dom";
 import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
+
+
 
 export function SearchList() {
+
+
   const [searchShow, setSearchShow] = useState([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [type, setType] = useState("all");
+
 
   
   const handlerPage1 = () => {
@@ -42,6 +48,7 @@ export function SearchList() {
     setPage(6);
   };
 
+
   const handleNext = () => {
     setPage((prev) => prev + 1);
   };
@@ -54,11 +61,11 @@ export function SearchList() {
     setPage(1);
   };
 
-
   const handleTypeChange = (e) => {
     setType(e.target.value);
     setPage(1);
   };
+
 
   const clearData = () => {
     setSearch("");
@@ -74,6 +81,8 @@ export function SearchList() {
     const handlerSearch = async () => {
       if (!search.trim()) {
         setSearchShow([]);
+        setLoading(false);
+        return;
       }
 
       setLoading(true);
@@ -81,7 +90,7 @@ export function SearchList() {
         //HERE IN THIS CODE I HAVE MENTION BELOW "movie" BECAUSE IN API U HAVE PASSED THE TYPE THERE BASED ON THAT IT WILL FETCH DATA
         // const dataSearch = await movieSearch(search, "movie", 1);
 
-        const dataSearch = await movieSearch(search,page,type);
+        const dataSearch = await movieSearch(search, page, type);
 
         const searchData = dataSearch?.Search || [];
 
@@ -93,12 +102,13 @@ export function SearchList() {
       }
     };
 
+    
     const clear = setTimeout(() => {
       handlerSearch();
     }, 500);
 
     return () => clearTimeout(clear);
-  }, [search, page,type]);
+  }, [search, page, type]);
 
   //Here in this code i have used the container because that cards are coming linely if we use that container know those are coming in side by side    etc:1)Page layout → Grid container
 
@@ -110,155 +120,111 @@ export function SearchList() {
   // {searchShow.map((item) => (
 
   return (
-    <Grid
-      container
-      sx={{
-        backgroundColor: "ButtonShadow",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Grid size xs={12}>
-        <Grid size xs={12}>
-          {loading && (
-            <Typography sx={{ fontSize: "20px", textAlign: "center", p: 5 }}>
-              Loading!!!!....
-            </Typography>
-          )}
-        </Grid>
 
-        <Grid size xs={12}>
-          {!loading && searchShow.length === 0 && search && (
-            <Typography
-              sx={{ fontSize: "20px", textAlign: "center", p: 5, color: "red" }}
-            >
-              No movies found
-            </Typography>
-          )}
-        </Grid>
+<Box  sx={{border:"2px solid black"}}>
 
-        <Grid size xs={12}>
-          <SearchMovies
-            searchHandler={searchHandler}
-            clearData={clearData}
-            search={search}
-            handleNext={handleNext}
-            page={page}
-            handlePrevious={handlePrevious}
-            handlerPage1={handlerPage1}
-            handlerPage2={handlerPage2}
-            handlerPage3={handlerPage3}
-            handlerPage4={handlerPage4}
-            handlerPage5={handlerPage5}
-            handlerPage6={handlerPage6}
-            handleTypeChange={handleTypeChange}
-            type={type}
-            // here this we need to use if we are using form method means
-            // handlerSearch={handlerSearch}
-          />
-        </Grid>
+<Box>
+
+{loading && (
+          <Typography  variant="h4" sx={{  textAlign: "center" }}>
+            Loading!!!!....
+          </Typography>
+        )}
+
+{!loading && searchShow.length === 0 && search && (
+          <Typography   variant="h4"
+            sx={{
+              textAlign: "center",
+              color: "red",
+              // mt: 2,
+            }}>
+
+No movies found
+          </Typography>
+)}
+</Box>
+
+
+
+
+
+
+<Grid container spacing={4}>
+
+  {/* Search section */}
+  <Grid size={{ xs: 12 }}>
+    <SearchMovies
+      searchHandler={searchHandler}
+      clearData={clearData}
+      search={search}
+      handleTypeChange={handleTypeChange}
+      type={type}
+    />
+  </Grid>
+
+  {/* Cards container */}
+  <Grid size={{ xs: 12 }}>
+
+  <Grid container spacing={3}>
+    {searchShow.map((item) => (
+      <Grid size={{ xs: 12, sm: 6, md: 3 }} key={item.imdbID}>
+
+        <NavLink to={`/movie/${item.imdbID}`} style={{ textDecoration: "none" }}>
+          <Card>
+            <CardActionArea>
+              <CardMedia
+                component="img"
+                image={
+                  item.Poster !== "N/A"
+                    ? item.Poster
+                    : "https://via.placeholder.com/300x400?text=No+Image"
+                }
+
+                // sx={{
+                //   maxHeight:{xs:400,md:100}
+                // }}
+              />
+              <CardContent>
+                <Typography textAlign="center" color="blue">
+                  {item.Title}
+                </Typography>
+              </CardContent>
+            </CardActionArea>
+          </Card>
+        </NavLink>
       </Grid>
+    ))}
+  </Grid>
+  </Grid>
 
-      <Grid container spacing={2} sx={{ m: 15 }}>
-        {searchShow.map((item) => (
-          <Grid size xs={12} key={item.imdbID} image={item.Poster}>
-            <NavLink
-              to={`/movie/${item.imdbID}`}
-              style={{ textDecoration: "none" }}
-            >
-              <Card sx={{ maxWidth: 345, p: 4, backgroundColor: "ButtonFace" }}>
-                <CardActionArea>
-                  <CardMedia
-                    component="img"
-                    image={
-                      item.Poster !== "N/A"
-                        ? item.Poster
-                        : "https://via.placeholder.com/300x400?text=No+Image"
-                    }
-                    alt={item.Title}
-                    sx={{
-                      height: 400,
-                      objectFit: "cover",
-                    }}
-                  />
-                  <CardContent>
-                    <Typography
-                      style={{
-                        fontSize: "20px",
-                        textAlign: "center",
-                        color: "blue",
-                      }}
-                    >
-                      {item.Title}
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
-            </NavLink>
-          </Grid>
-        ))}
-      </Grid>
 
-      <Grid size xs={12} sx={{ mt: 10 }}>
-        <Button
-          variant="contained"
-          onClick={() => handlerPage1()}
-          sx={{ mt: 1, ml: 2 }}
-        >
-          1
-        </Button>
+</Grid>
 
-        <Button
-          variant="contained"
-          onClick={() => handlerPage2()}
-          sx={{ mt: 1, ml: 2 }}
-        >
-          2
-        </Button>
-        <Button
-          variant="contained"
-          onClick={() => handlerPage3()}
-          sx={{ mt: 1, ml: 2 }}
-        >
-          3
-        </Button>
 
-        <Button
-          variant="contained"
-          onClick={() => handlerPage4()}
-          sx={{ mt: 1, ml: 2 }}
-        >
-          4
-        </Button>
 
-        <Button
-          variant="contained"
-          onClick={() => handlerPage5()}
-          sx={{ mt: 1, ml: 2 }}
-        >
-          5
-        </Button>
 
-        <Button
-          variant="contained"
-          onClick={() => handlerPage6()}
-          sx={{ mt: 1, ml: 2 }}
-        >
-          6
-        </Button>
+<Box      sx={{
+    display: "flex",
+    gap: 1,
+    flexWrap: "wrap",
+    justifyContent: "center",
+    p: 2
+  }}>
+<Button variant="contained" size="small" onClick={() => setPage(1)}>1</Button>
+<Button variant="contained" size="small" onClick={() => setPage(2)}>2</Button>
+<Button variant="contained" size="small" onClick={() => setPage(3)}>3</Button>
+<Button variant="contained" size="small" onClick={() => setPage(4)}>4</Button>
+<Button onClick={handlePrevious}>Previous</Button>
+    <Button onClick={handleNext}>Next</Button>
 
-        <Button
-          variant="contained"
-          onClick={handlePrevious}
-          sx={{ mt: 1, ml: 2 }}
-        >
-          Previous
-        </Button>
 
-        <Button variant="contained" onClick={handleNext} sx={{ mt: 1, ml: 2 }}>
-          Next
-        </Button>
-      </Grid>
-    </Grid>
-  );
+</Box>
+
+
+
+</Box>
+
+  )
+
+
 }
