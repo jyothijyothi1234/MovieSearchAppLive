@@ -23,30 +23,7 @@ export function SearchList() {
   const [type, setType] = useState("all");
 
 
-  
-  const handlerPage1 = () => {
-    setPage(1);
-  };
 
-  const handlerPage2 = () => {
-    setPage(2);
-  };
-
-  const handlerPage3 = () => {
-    setPage(3);
-  };
-
-  const handlerPage4 = () => {
-    setPage(4);
-  };
-
-  const handlerPage5 = () => {
-    setPage(5);
-  };
-
-  const handlerPage6 = () => {
-    setPage(6);
-  };
 
 
   const handleNext = () => {
@@ -73,9 +50,6 @@ export function SearchList() {
     setPage(1);
   };
 
-  // If we are using form then this method is correct for that with out use effect
-  // const handlerSearch = async (e) => {
-  //   e.preventDefault();
 
   useEffect(() => {
     const handlerSearch = async () => {
@@ -87,8 +61,7 @@ export function SearchList() {
 
       setLoading(true);
       try {
-        //HERE IN THIS CODE I HAVE MENTION BELOW "movie" BECAUSE IN API U HAVE PASSED THE TYPE THERE BASED ON THAT IT WILL FETCH DATA
-        // const dataSearch = await movieSearch(search, "movie", 1);
+       
 
         const dataSearch = await movieSearch(search, page, type);
 
@@ -110,14 +83,7 @@ export function SearchList() {
     return () => clearTimeout(clear);
   }, [search, page, type]);
 
-  //Here in this code i have used the container because that cards are coming linely if we use that container know those are coming in side by side    etc:1)Page layout → Grid container
 
-  // 2)Row of cards → Grid container
-
-  // 3)Each card → Grid item
-
-  // <Grid container spacing={2} sx={{ m: 15 }}>
-  // {searchShow.map((item) => (
 
   return (
 
@@ -151,7 +117,6 @@ No movies found
 
 <Grid container spacing={4}>
 
-  {/* Search section */}
   <Grid size={{ xs: 12 }}>
     <SearchMovies
       searchHandler={searchHandler}
@@ -162,7 +127,6 @@ No movies found
     />
   </Grid>
 
-  {/* Cards container */}
   <Grid size={{ xs: 12 }}>
 
   <Grid container spacing={3}>
@@ -180,9 +144,7 @@ No movies found
                     : "https://via.placeholder.com/300x400?text=No+Image"
                 }
 
-                // sx={{
-                //   maxHeight:{xs:400,md:100}
-                // }}
+              
               />
               <CardContent>
                 <Typography textAlign="center" color="blue">
